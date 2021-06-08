@@ -1,0 +1,11 @@
+# app
+fastapi
+uvicorn
+pydantic
+email-validator
+fastapi-users[sqlalchemy]
+# db
+psycopg2
+databases[postgresql]
+SQLAlchemy
+alembic

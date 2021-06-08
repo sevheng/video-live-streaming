@@ -1,0 +1,29 @@
+{
+	"name": "Product Management",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "app",
+	"workspaceFolder": "/workspace",
+	"extensions": [
+		"visualstudioexptteam.vscodeintellicode",
+		"ms-python.python",
+		"ms-python.vscode-pylance",
+		"gruntfuggly.todo-tree",
+		"streetsidesoftware.code-spell-checker"
+	],
+	"settings": {
+		"terminal.integrated.shell.linux": "/bin/sh",
+		"python.pythonPath": "/opt/venv/bin/python",
+		"python.linting.pylintEnabled": true,
+		"python.linting.enabled": true,
+		// "python.linting.pylintArgs": [
+		// 	"--load-plugins=pylint_django",
+		// 	"--errors-only",
+		// 	"--enable=<stuff>,unused-import"
+		// ],
+		"[python]": {
+			"editor.codeActionsOnSave": {
+				"source.organizeImports": true
+			}
+		}
+	}
+}
