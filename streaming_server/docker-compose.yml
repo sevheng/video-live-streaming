@@ -10,5 +10,11 @@ services:
     environment:
       - HTTP_PORT=80
       - RTMP_PORT=1935
+    networks:
+       - logic_server_default
     # volumes:
     #   - ./certs:/opt/certs  
+
+networks:
+  logic_server_default:
+    external: true

@@ -22,5 +22,5 @@ DATABASE_URL = config(
   default=f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 )
 
-# engine = create_async_engine(DATABASE_URL, future=True, echo=True)
-# async_session = sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
+# 60 minutes * 24 hours * 8 days = 8 days
+ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 8

@@ -1,28 +1,30 @@
 from enum import Enum
 from typing import Optional
 
+from main.serializers import as_form
 from pydantic import BaseModel, validator
-from pydantic.fields import Field
+from pydantic.fields import Field, ModelPrivateAttr
 
 
 class StreamingStatus(str, Enum):
+    pause = 'pause'
     playing = 'playing'
     end = 'end'
     
 class StreamingBase(BaseModel):
     name: Optional[str] = None
-    status: Optional[StreamingStatus] = Field()
+    status: Optional[StreamingStatus] = Field(default=StreamingStatus.pause)
 
-    @validator('status')
-    def validate_status(cls, v):
-        if ' ' not in v:
-            raise ValueError('must contain a space')
-        return v.title()
+    # @validator('status')
+    # def validate_status(cls, v):
+    #     if ' ' not in v:
+    #         raise ValueError('must contain a space')
+    #     return v.title()
 
 
 class StreamingCreate(StreamingBase):
     name: str
-    status: StreamingStatus
+    
 
 class StreamingUpdate(StreamingBase):
     pass
