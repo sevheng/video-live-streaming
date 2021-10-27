@@ -8,5 +8,6 @@ python-jose[cryptography]
 # db
 psycopg2
 databases[postgresql]
-SQLAlchemy
+sqlalchemy
 alembic
+ormar

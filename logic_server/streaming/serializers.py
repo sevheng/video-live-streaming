@@ -4,6 +4,7 @@ from typing import Optional
 from main.serializers import as_form
 from pydantic import BaseModel, validator
 from pydantic.fields import Field, ModelPrivateAttr
+from user.serializers import User
 
 
 class StreamingStatus(str, Enum):
@@ -41,3 +42,4 @@ class Streaming(StreamingBase):
     id: int
     name: str
     status: str
+    user: User

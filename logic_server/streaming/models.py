@@ -1,8 +1,11 @@
 from enum import Enum
 from typing import TYPE_CHECKING, Any, List
 
+import ormar
 import sqlalchemy as sa
-from database.base_class import BaseManager, BaseModel
+from database.base_class import BaseManager, BaseMeta
+from sqlalchemy.orm import relationship
+from user.models import User
 
 from .serializers import Streaming, StreamingCreate, StreamingStatus
 
@@ -17,44 +20,57 @@ from .serializers import Streaming, StreamingCreate, StreamingStatus
 #     sa.Column("status", sa.String(10), nullable=False, index=True),
 # ) 
 
-class Streaming(BaseModel):
-    id = sa.Column(sa.Integer, primary_key=True)
-    name  = sa.Column(sa.Text, nullable=False, index=True)
-    status = sa.Column(sa.String(10), nullable=False, index=True)
+class Streaming(ormar.Model):
 
-class StreamingManager(BaseManager):
+    class Meta(BaseMeta):
+        tablename = 'streaming'
 
-    table = Streaming.__table__
+    id: int = ormar.Integer(primary_key=True)
+    status: str = ormar.String(max_length=10)
+    name: str = ormar.String(max_length=255)
+    user: User = ormar.ForeignKey(User,name='user_id')
+    
+    # id = sa.Column(sa.Integer, primary_key=True)
+    # status = sa.Column(sa.String(10), nullable=False, index=True)
+    # name  = sa.Column(sa.Text, nullable=False, index=True)
+    # user_id = sa.Column(sa.Integer,sa.ForeignKey('user.id'),nullable=False,index=True)
 
-    async def list(self,limit: int= 20,page : int= 0) -> Any:
-        offset = limit * (page - 1)
-        query = self.table.select().offset(offset).limit(limit)
-        instances = await self.db.fetch_all(query)
-        total = await self.db.fetch_val(self.table.count())
-        return instances,total
+    # user = relationship('User')
 
-    async def get(self,id : int) -> Any:
-        query = self.table.select().where(self.table.c.id == id)
-        instance = await self.db.fetch_one(query)
-        return instance
+# class StreamingManager(BaseManager):
 
-    async def create(self, object: StreamingCreate) -> Any:
-        instance = object.dict()
-        query = self.table.insert().values(**instance)
-        instance['id'] = await self.db.execute(query)
-        return instance
+#     table = Streaming.__table__
 
-    async def update(self,instance : Streaming,update_object: StreamingCreate) -> Any:
+#     async def list(self,limit: int= 20,page : int= 0) -> Any:
+#         offset = limit * (page - 1)
+#         # query = self.table.select().offset(offset).limit(limit)
+#         # instances = await self.db.fetch_all(query)
+#         # total = await self.db.fetch_val(self.table.count())
+#         instances = await Streaming
+#         total=0
+#         return instances,total
 
-        update_instance = update_object.dict(exclude_unset=True)
+#     async def get(self,id : int) -> Any:
+#         query = self.table.select().where(self.table.c.id == id)
+#         instance = await self.db.fetch_one(query)
+#         return instance
 
-        for k,v in update_instance.items():
-            setattr(instance,k,v)
+#     async def create(self, object: dict) -> Any:
+#         query = self.table.insert().values(**object)
+#         object['id'] = await self.db.execute(query)
+#         return object
 
-        query = self.table.update().where(self.table.c.id == instance.id).values(**instance.dict())
-        await self.db.execute(query)
+#     async def update(self,instance : Streaming,update_object: StreamingCreate) -> Any:
+
+#         update_instance = update_object.dict(exclude_unset=True)
+
+#         for k,v in update_instance.items():
+#             setattr(instance,k,v)
+
+#         query = self.table.update().where(self.table.c.id == instance.id).values(**instance.dict())
+#         await self.db.execute(query)
         
-        return instance
+#         return instance
 
 
 

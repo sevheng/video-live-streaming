@@ -4,7 +4,7 @@
 FROM python:3-alpine AS compile
 
 # Install dependencies required to compile Python packages
-RUN apk add --no-cache postgresql-dev libffi-dev musl-dev gcc build-base
+RUN apk add --no-cache postgresql-dev libffi-dev musl-dev gcc build-base rust cargo
 
 # Create Python virtualenv and use it
 RUN python -m venv /opt/venv
@@ -14,7 +14,7 @@ ENV PATH="/opt/venv/bin:$PATH"
 ADD requirements.txt .
 
 # Install requirements (save space by not caching)
-RUN pip install -r requirements.txt --no-cache-dir
+RUN pip install --upgrade pip && pip install -r requirements.txt --no-cache-dir
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Runtime Image

@@ -9,10 +9,13 @@ from sqlalchemy import engine_from_config, pool
 # we're appending the app directory to our path here so that we can import config easily
 sys.path.append(str(pathlib.Path(__file__).resolve().parents[2]))
 
+from database.base_class import BaseModel
 from main.config import DATABASE_URL  # noqa
 
 # Alembic Config object, which provides access to values within the .ini file
 config = alembic.context.config
+
+
 # Interpret the config file for logging
 fileConfig(config.config_file_name)
 logger = logging.getLogger("alembic.env")
@@ -33,7 +36,7 @@ def run_migrations_online() -> None:
     with connectable.connect() as connection:
         alembic.context.configure(
             connection=connection,
-            target_metadata=None
+            target_metadata=BaseModel.metadata
         )
         with alembic.context.begin_transaction():
             alembic.context.run_migrations()

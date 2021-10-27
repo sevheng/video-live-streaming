@@ -1,4 +1,5 @@
-from databases import DatabaseURL
+import sqlalchemy
+from databases import Database, DatabaseURL
 from starlette.config import Config
 from starlette.datastructures import Secret
 
@@ -21,6 +22,9 @@ DATABASE_URL = config(
   cast=DatabaseURL,
   default=f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 )
+
+DATABASE = Database(DATABASE_URL,min_size=2, max_size=10)
+SQL_METADATA = sqlalchemy.MetaData()
 
 # 60 minutes * 24 hours * 8 days = 8 days
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 8

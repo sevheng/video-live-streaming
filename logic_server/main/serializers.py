@@ -97,17 +97,17 @@ class Serializer(SerializerBase[DataT], Generic[DataT]):
         del _dict['data']
         return _dict
 
-class Response(Generic[DataT]):
+class Response():
     _response : PrivateAttr 
 
-    def __init__(self,data,per_page=10,page=1,total=1) -> None:
+    def __init__(self,serializer_class,data,per_page=10,page=1,total=1) -> None:
         if isinstance(data,List):
-            self._response = SerializersWithPagination[DataT](data=data,per_page=per_page,page=page,total=total)
+            self._response = SerializersWithPagination[serializer_class](data=data,per_page=per_page,page=page,total=total)
         else:
             if data:
-                self._response = Serializer[DataT](data=data)
+                self._response = Serializer[serializer_class](data=data)
             else:
-                self._response = SerializerError[DataT](message="Not Found")
+                self._response = SerializerError[serializer_class](message="Not Found")
 
     def __call__(self, *args: Any, **kwds: Any) -> Any:
         return self._response

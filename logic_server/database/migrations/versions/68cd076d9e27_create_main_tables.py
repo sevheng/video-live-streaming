@@ -18,13 +18,6 @@ depends_on = None
 def upgrade():
     
     op.create_table(
-        "streaming",
-        sa.Column("id", sa.Integer, primary_key=True),
-        sa.Column("name", sa.String, nullable=False, index=True),
-        sa.Column("status", sa.String(10), nullable=False, index=True),
-    )
-
-    op.create_table(
         "user",
         sa.Column("id", sa.Integer, primary_key=True),
         sa.Column("full_name", sa.String, nullable=False, index=True),
@@ -32,6 +25,14 @@ def upgrade():
         sa.Column("hashed_password", sa.String, nullable=False, index=True),
         sa.Column("is_active", sa.Boolean, default=True, index=True),
         sa.Column("is_superuser", sa.Boolean, default=False, index=True)
+    )
+
+    op.create_table(
+        "streaming",
+        sa.Column("id", sa.Integer, primary_key=True),
+        sa.Column("name", sa.String, nullable=False, index=True),
+        sa.Column("status", sa.String(10), nullable=False, index=True),
+        sa.Column("user_id",sa.Integer,sa.ForeignKey("user.id"), nullable=False, index=True)
     )
 
 

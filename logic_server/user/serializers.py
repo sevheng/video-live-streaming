@@ -40,6 +40,7 @@ class Token(BaseModel):
     access_token: str
     user : User
 
-class Login(BaseModel):
-    email : EmailStr
-    password: str
+# class Login(BaseModel):
+#     grant_type: Optional[str]
+#     username : str
+#     password: str
